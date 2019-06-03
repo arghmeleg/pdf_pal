@@ -37,7 +37,11 @@ defmodule PdfPal do
       |> File.ls!()
       |> Enum.filter(fn name -> name =~ ~r/\.jpeg|\.jpg/ end)
 
-    Enum.each(image_files, fn name -> System.cmd("jpegoptim", [Path.join(dirname, name)]) end)
+    if System.find_executable("jpegoptim") do
+      Enum.each(image_files, fn name -> System.cmd("jpegoptim", [Path.join(dirname, name)]) end)
+    else
+      IO.puts "jpegoptim not found, skipping image optimization."
+    end
 
     dup_images =
       image_files
