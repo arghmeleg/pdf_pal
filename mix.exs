@@ -1,12 +1,18 @@
 defmodule PdfPal.MixProject do
   use Mix.Project
 
+  @description "Easy PDF to HTML conversion."
+  @version "0.1.0"
+
   def project do
     [
       app: :pdf_pal,
-      version: "0.1.0",
+      version: @version,
+      description: @description,
       elixir: "~> 1.8",
+      package: package(),
       start_permanent: Mix.env() == :prod,
+      source_url: "https://github.com/arghmeleg/pdf_pal"
       deps: deps()
     ]
   end
@@ -21,5 +27,22 @@ defmodule PdfPal.MixProject do
     [
       {:floki, "~> 0.20.4"}
     ]
+  end
+
+  defp package do
+    %{
+      maintainers: ["Steve DeGele"],
+      licenses: ["MIT"],
+      files: [
+        "lib",
+        "test",
+        "mix.exs",
+        "README.md",
+        "LICENSE",
+      ],
+      links: %{
+        "GitHub" => "https://github.com/arghmeleg/pdf_pal"
+      }
+    }
   end
 end

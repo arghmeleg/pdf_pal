@@ -1,6 +1,6 @@
 # PdfPal
 
-**TODO: Add description**
+**You must have pdf2htmlEX installed!**
 
 ## Installation
 
@@ -18,4 +18,3 @@ end
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/pdf_pal](https://hexdocs.pm/pdf_pal).
-
