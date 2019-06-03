@@ -1,4 +1,4 @@
-defmodule ManMap do
+defmodule PdfPal do
   @opts [
     zoom: 2,
     embed_font: false,
@@ -12,21 +12,24 @@ defmodule ManMap do
     |> File.ls!()
     |> Enum.map(&Path.join(path_to_pdfs, &1))
     |> Enum.each(fn path_to_pdf ->
-      dest_dir_name = Path.join(destination_dir, to_url_name(path_to_pdf))
-      process(path_to_pdf, dest_dir_name, filename)
-      post_process(Path.join(dest_dir_name, filename))
+      IO.puts(path_to_pdf)
+      process(path_to_pdf, destination_dir, filename)
     end)
   end
 
-  def process(path_to_pdf, destination_dir, filename \\ "index.html") do
-    IO.puts(path_to_pdf)
+  def process(path_to_pdf, destination_dir \\ "htmls", filename \\ "index.html") do
+    dest_dir_name = Path.join(destination_dir, to_url_name(path_to_pdf))
+    convert(path_to_pdf, dest_dir_name, filename)
+    clean(Path.join(dest_dir_name, filename))
+  end
 
+  defp convert(path_to_pdf, destination_dir, filename) do
     opts = Keyword.put(@opts, :dest_dir, destination_dir)
     File.mkdir_p(destination_dir)
     Pdf2html.convert(path_to_pdf, filename, opts)
   end
 
-  def post_process(filename \\ "2017-bmw-r-ninet-pure-usa-72301/manual.html") do
+  defp clean(filename) do
     dirname = Path.dirname(filename)
 
     image_files =

@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure your application as:
 #
-#     config :man_map, key: :value
+#     config :pdf_pal, key: :value
 #
 # and access this configuration in your application as:
 #
-#     Application.get_env(:man_map, :key)
+#     Application.get_env(:pdf_pal, :key)
 #
 # You can also configure a third-party app:
 #

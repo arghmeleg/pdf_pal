@@ -1,9 +1,9 @@
-defmodule ManMap.MixProject do
+defmodule PdfPal.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :man_map,
+      app: :pdf_pal,
       version: "0.1.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
@@ -11,14 +11,12 @@ defmodule ManMap.MixProject do
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
   def application do
     [
       extra_applications: [:logger]
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:floki, "~> 0.20.4"}
