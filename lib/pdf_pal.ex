@@ -13,7 +13,11 @@ defmodule PdfPal do
     |> Enum.map(&Path.join(path_to_pdfs, &1))
     |> Enum.each(fn path_to_pdf ->
       IO.puts(path_to_pdf)
-      process(path_to_pdf, destination_dir, filename)
+      try do
+        process(path_to_pdf, destination_dir, filename)
+      rescue
+        e in RuntimeError -> IO.puts("Error processing #{path_to_pdf}: " <> e.message)
+      end
     end)
   end
 
@@ -40,7 +44,7 @@ defmodule PdfPal do
     if System.find_executable("jpegoptim") do
       Enum.each(image_files, fn name -> System.cmd("jpegoptim", [Path.join(dirname, name)]) end)
     else
-      IO.puts "jpegoptim not found, skipping image optimization."
+      IO.puts("jpegoptim not found, skipping image optimization.")
     end
 
     dup_images =
@@ -74,6 +78,7 @@ defmodule PdfPal do
     File.write(filename, "<!DOCTYPE html>\n#{content}")
 
     pdf2html_img = [Path.join(dirname, "pdf2htmlEX-64x64.png")]
+
     if File.exists?(pdf2html_img) do
       File.rm(pdf2html_img)
     end
@@ -89,7 +94,11 @@ defmodule PdfPal do
 
   defp add_viewport(content) do
     if Enum.empty?(Floki.find(content, "meta[name='viewport']")) do
-      String.replace(content, "</head>", "<meta name='viewport' content='width=device-width, initial-scale=1'></head>")
+      String.replace(
+        content,
+        "</head>",
+        "<meta name='viewport' content='width=device-width, initial-scale=1'></head>"
+      )
     else
       content
     end
@@ -98,6 +107,7 @@ defmodule PdfPal do
   defp remove_dup_images(content, dup_images) do
     Enum.reduce(dup_images, content, fn [first_image | rest_of_images], acc ->
       first_image = Path.basename(first_image)
+
       Enum.reduce(rest_of_images, acc, fn image, acc2 ->
         File.rm(image)
         image = Path.basename(image)
@@ -120,16 +130,16 @@ defmodule PdfPal do
     |> String.replace(~r/[^a-z0-9]/, "-")
     |> String.replace(~r/-+/, "-")
     |> String.replace(~r/download/, "")
-    |> String.trim()
+    |> String.trim("-")
   end
 
   defp html_replace(content, selector, fun) do
     elements = Floki.find(content, selector)
+
     Enum.reduce(elements, content, fn element, acc ->
       raw_element = Floki.raw_html(element)
       new_element = fun.(raw_element)
       String.replace(acc, raw_element, new_element)
     end)
   end
-
 end

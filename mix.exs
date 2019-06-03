@@ -7,12 +7,13 @@ defmodule PdfPal.MixProject do
   def project do
     [
       app: :pdf_pal,
+      name: "PdfPal",
       version: @version,
       description: @description,
       elixir: "~> 1.8",
       package: package(),
       start_permanent: Mix.env() == :prod,
-      source_url: "https://github.com/arghmeleg/pdf_pal"
+      source_url: "https://github.com/arghmeleg/pdf_pal",
       deps: deps()
     ]
   end
@@ -25,7 +26,8 @@ defmodule PdfPal.MixProject do
 
   defp deps do
     [
-      {:floki, "~> 0.20.4"}
+      {:floki, "~> 0.20.4"},
+      {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
 
@@ -38,7 +40,7 @@ defmodule PdfPal.MixProject do
         "test",
         "mix.exs",
         "README.md",
-        "LICENSE",
+        "LICENSE"
       ],
       links: %{
         "GitHub" => "https://github.com/arghmeleg/pdf_pal"

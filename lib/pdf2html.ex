@@ -4,6 +4,7 @@ defmodule Pdf2html do
     cmd = Application.get_env(:pdf2html, :executable, System.find_executable("pdf2htmlEX"))
     opts = parse_opts(opts) ++ [pdf, html]
     {msg, exit_status} = System.cmd(cmd, opts)
+
     if exit_status != 0 do
       raise RuntimeError, message: "The command line tool reported an error: #{msg}"
     end
@@ -42,6 +43,7 @@ defmodule Pdf2html do
       opt_name
       |> to_string()
       |> String.replace("_", "-")
+
     "--#{dash_name}"
   end
 end
